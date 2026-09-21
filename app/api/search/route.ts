@@ -1,0 +1,2 @@
+import {NextResponse} from 'next/server';import {supabaseServer} from '@/lib/supabase/server';
+export async function GET(request:Request){const q=new URL(request.url).searchParams.get('q')?.trim();if(!q||q.length<2)return NextResponse.json([]);const result=await supabaseServer().from('products').select('id,name,slug,retail_price,images').eq('is_active',true).ilike('name',`%${q}%`).limit(6);return NextResponse.json(result.data||[])}

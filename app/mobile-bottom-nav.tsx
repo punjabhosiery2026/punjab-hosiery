@@ -1,0 +1,4 @@
+'use client';
+import Link from 'next/link';
+import {useEffect,useState} from 'react';
+export default function MobileBottomNav(){const[count,setCount]=useState(0);useEffect(()=>{const refresh=()=>{try{setCount(JSON.parse(sessionStorage.getItem('cart')||'[]').reduce((sum:number,item:{quantity?:number})=>sum+(item.quantity||0),0))}catch{}};refresh();window.addEventListener('cart-updated',refresh);return()=>window.removeEventListener('cart-updated',refresh)},[]);return <nav className="mobile-bottom-nav" aria-label="Quick navigation"><Link href="/">⌂<span>Home</span></Link><Link href="/shop">⌕<span>Search</span></Link><Link href="/wishlist">♡<span>Wishlist</span></Link><Link href="/cart">🛒<em>{count}</em><span>Cart</span></Link><a href="https://wa.me/919219879392">◉<span>WhatsApp</span></a></nav>}

@@ -1,0 +1,5 @@
+'use client';
+import {useEffect,useState} from 'react';
+import Link from 'next/link';
+type Result={id:string;name:string;slug:string;retail_price:number;images:string[]};
+export default function SearchBox(){const[q,setQ]=useState(''),[results,setResults]=useState<Result[]>([]);useEffect(()=>{if(q.trim().length<2){setResults([]);return}const timer=setTimeout(()=>fetch(`/api/search?q=${encodeURIComponent(q)}`).then(r=>r.ok?r.json():[]).then(setResults).catch(()=>setResults([])),180);return()=>clearTimeout(timer)},[q]);return <form className="header-search" action="/shop"><input name="q" value={q} onChange={e=>setQ(e.target.value)} placeholder="Search products" aria-label="Search products" autoComplete="off"/><button aria-label="Search">⌕</button>{results.length>0&&<div className="search-suggestions">{results.map(item=><Link href={`/product/${item.slug}`} key={item.id} onClick={()=>setResults([])}>{item.images[0]&&<img src={item.images[0]} alt=""/>}<span>{item.name}<small>₹{item.retail_price}</small></span></Link>)}</div>}</form>}

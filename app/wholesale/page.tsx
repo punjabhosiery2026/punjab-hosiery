@@ -1,0 +1,2 @@
+import {supabaseServer} from '@/lib/supabase/server';import type {Product} from '@/lib/types';import WholesaleClient from './wholesale-client';
+export default async function Wholesale(){let products:Product[]=[];try{const result=await supabaseServer().from('products').select('*').eq('is_active',true).eq('wholesale_enabled',true).order('created_at',{ascending:false});products=result.data||[]}catch{}return <WholesaleClient products={products}/>}
